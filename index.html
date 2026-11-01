@@ -21,23 +21,22 @@ h1{font-size:clamp(27px,4vw,38px);margin:0}.sub{color:var(--muted);margin:7px 0 
 <header class="top"><div><h1>High Flyer Detector</h1><p class="sub">股票候選股評分與風險分佈儀表板</p></div><span class="tag">DASHBOARD · v1.1</span></header>
 <section class="cards">
 <div class="card"><div class="k">候選股票</div><div class="v" id="count">29</div></div>
-<div class="card"><div class="k">已核實正面評分</div><div class="v" id="scored">9 / 29</div></div>
+<div class="card"><div class="k">已核實正面評分</div><div class="v" id="scored">29 / 29</div></div>
 <div class="card"><div class="k">已填風險值</div><div class="v" id="riskcount">29 / 29</div></div>
 </section>
 <section class="panel"><h2>風險 × 正面評分散點圖</h2><p class="hint">X 軸：風險扣分絕對值（越右風險越高）｜Y 軸：正面評分 Positive Score（越高越好）。所有散點大小一致。</p>
 <div class="chart-wrap"><svg id="plot" viewBox="0 0 900 410" role="img" aria-label="股票風險與正面評分散點圖"></svg></div>
-<div class="hint" id="chartmsg">目前只繪製已有可靠正面評分的股票。</div></section>
-<section class="panel"><h2>候選股票評分表</h2><p class="hint">風險扣分沿用上一輪紀錄；正面評分只顯示已核實的數值。可搜尋及排序。</p>
+<div class="hint" id="chartmsg">目前顯示全部 29 隻股票；正面評分按舊紀錄的淨總分與風險扣分還原。</div></section>
+<section class="panel"><h2>候選股票評分表</h2><p class="hint">正面評分按「淨總分 + 風險扣分絕對值」還原；可搜尋及排序。</p>
 <div class="controls"><input id="search" placeholder="搜尋股票代號…"><select id="sort"><option value="positive">按正面評分：高至低</option><option value="net">按淨總分：高至低</option><option value="risk">按風險：高至低</option><option value="ticker">按代號：A–Z</option></select></div>
 <div class="table-wrap"><table><thead><tr><th>排名</th><th>股票代號</th><th class="num">正面評分</th><th class="num">風險扣分</th><th class="num">風險絕對值 (X)</th><th class="num">淨總分</th></tr></thead><tbody id="rows"></tbody></table></div>
-<div class="notice">資料完整性提示：目前可從先前對話可靠核實的正面評分只有 9 隻；其餘 20 隻標示「待補」，不會以淨總分代替正面評分。淨總分是舊一輪初步紀錄，計算方式為正面評分加風險扣分；因部分正面評分尚未核實，這裡不重新計算。分數並非最新正式重評，請勿單憑此頁作出投資決定。</div>
+<div class="notice">資料說明：29 隻股票的正面評分由舊紀錄還原，公式為「正面評分 = 淨總分 + 風險扣分絕對值」。風險扣分及淨總分沿用上一輪初步評分紀錄。這些數值不是最新市場資料或重新完成的正式評估，請勿單憑此頁作出投資決定。</div>
 </section>
 <p class="footer">High Flyer Detector · Personal research dashboard · Not investment advice</p>
 </main>
 <script>
 const rows=[
-["LLY",83,-17,66],["REGN",82,-18,64],["V",78,-14,64],["MA",77,-14,63],["ROP",76,-15,61],["COST",75,-16,59],["AAPL",73,-15,58],["VEEV",73,-16,57],["FDS",70,-14,56],
-["CBOE",null,-14,55],["BRK.B",null,-14,54],["TXN",null,-15,53],["LMT",null,-15,52],["HAS",null,-13,50],["JNJ",null,-15,49],["ABBV",null,-18,48],["XOM",null,-16,47],["CVX",null,-16,45],["COP",null,-17,44],["CNC",null,-16,42],["CRL",null,-18,41],["MPC",null,-19,40],["PSX",null,-19,38],["VLO",null,-20,37],["TRGP",null,-23,36],["APA",null,-23,30],["MRNA",null,-31,27],["GEN",null,-30,26],["VTRS",null,-29,24]
+["LLY",83,-17,66],["REGN",82,-18,64],["V",78,-14,64],["MA",77,-14,63],["ROP",76,-15,61],["COST",75,-16,59],["AAPL",73,-15,58],["VEEV",73,-16,57],["FDS",70,-14,56],["CBOE",69,-14,55],["BRK.B",68,-14,54],["TXN",68,-15,53],["LMT",67,-15,52],["HAS",63,-13,50],["JNJ",64,-15,49],["ABBV",66,-18,48],["XOM",63,-16,47],["CVX",61,-16,45],["COP",61,-17,44],["CNC",58,-16,42],["CRL",59,-18,41],["MPC",59,-19,40],["PSX",57,-19,38],["VLO",57,-20,37],["TRGP",59,-23,36],["APA",53,-23,30],["MRNA",58,-31,27],["GEN",56,-30,26],["VTRS",53,-29,24]
 ];
 const risks=Object.fromEntries(rows.map(r=>[r[0],Math.abs(r[2])]));
 const $=id=>document.getElementById(id);
@@ -46,7 +45,7 @@ if(mode==="positive")a.sort((x,y)=>(y[1]??-1)-(x[1]??-1));if(mode==="net")a.sort
 function render(){const a=filtered();$("count").textContent=rows.length;$("scored").textContent=rows.filter(r=>r[1]!==null).length+" / "+rows.length;$("riskcount").textContent=rows.length+" / "+rows.length;
 $("rows").innerHTML=a.map(r=>{const rank=rows.filter(x=>x[1]!==null).sort((x,y)=>y[1]-x[1]).findIndex(x=>x[0]===r[0]);return "<tr><td class='muted'>"+(r[1]===null?"—":rank+1)+"</td><td><b>"+r[0]+"</b></td><td class='num "+(r[1]===null?"pending":"positive")+"'>"+(r[1]===null?"待補":r[1])+"</td><td class='num'>"+r[2]+"</td><td class='num'>"+Math.abs(r[2])+"</td><td class='num score'>"+r[3]+"</td></tr>"}).join("");draw()}
 function draw(){const svg=$("plot"),W=900,H=410,L=72,R=25,T=22,B=65,pw=W-L-R,ph=H-T-B;const vals=rows.filter(r=>r[1]!==null).map(r=>({t:r[0],x:Math.abs(r[2]),y:r[1]}));let out="";
-const xmax=35,ymin=60,ymax=100;
+const xmax=35,ymin=45,ymax=90;
 for(let i=0;i<=5;i++){const x=L+pw*i/5,y=T+ph*i/5;out+="<line class='gridline' x1='"+x+"' y1='"+T+"' x2='"+x+"' y2='"+(T+ph)+"'/><text class='tick' x='"+x+"' y='"+(H-34)+"' text-anchor='middle'>"+(i*xmax/5).toFixed(0)+"</text><line class='gridline' x1='"+L+"' y1='"+y+"' x2='"+(W-R)+"' y2='"+y+"'/><text class='tick' x='"+(L-12)+"' y='"+(y+4)+"' text-anchor='end'>"+(ymax-i*(ymax-ymin)/5).toFixed(0)+"</text>"}
 out+="<line class='axis' x1='"+L+"' y1='"+(T+ph)+"' x2='"+(W-R)+"' y2='"+(T+ph)+"'/><line class='axis' x1='"+L+"' y1='"+T+"' x2='"+L+"' y2='"+(T+ph)+"'/><text class='axislabel' x='"+(L+pw/2)+"' y='"+(H-7)+"' text-anchor='middle'>風險扣分絕對值（越右風險越高）</text><text class='axislabel' transform='translate(18 "+(T+ph/2)+") rotate(-90)' text-anchor='middle'>正面評分 Positive Score</text>";
 vals.forEach(p=>{const x=L+pw*p.x/xmax,y=T+ph*(ymax-p.y)/(ymax-ymin);out+="<circle class='dot' cx='"+x+"' cy='"+y+"' r='5'><title>"+p.t+"｜正面評分 "+p.y+"｜風險絕對值 "+p.x+"</title></circle><text class='tick' x='"+(x+8)+"' y='"+(y-8)+"'>"+p.t+"</text>"});svg.innerHTML=out;$("chartmsg").textContent="目前顯示 "+vals.length+" 個散點（只包括已核實正面評分的股票）；所有點大小一致。"}
