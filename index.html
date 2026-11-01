@@ -4,53 +4,51 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>High Flyer Detector</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--panel:#131b2e;--panel2:#18233a;--line:#2a3854;--text:#e8eefb;--muted:#9aabc7;--accent:#72a7ff;--green:#50d6a0;--red:#ff8c8c}
+:root{color-scheme:dark;--bg:#0b1020;--panel:#131b2e;--line:#2a3854;--text:#e8eefb;--muted:#9aabc7;--accent:#72a7ff;--green:#50d6a0}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#0b1020,#101a30);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:1240px;margin:auto;padding:28px 20px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-h1{font-size:clamp(27px,4vw,38px);margin:0;letter-spacing:-.5px}.sub{color:var(--muted);margin:7px 0 0}.tag{border:1px solid #36527c;color:#b8d2ff;border-radius:30px;padding:6px 12px;font-size:12px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:25px 0}
-.card,.panel{background:linear-gradient(145deg,var(--panel),#111a2c);border:1px solid var(--line);border-radius:16px;padding:18px}
-.k{color:var(--muted);font-size:13px}.v{font-size:27px;font-weight:700;margin-top:5px}
+main{max-width:1280px;margin:auto;padding:28px 20px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font-size:clamp(27px,4vw,38px);margin:0}.sub{color:var(--muted);margin:7px 0 0}.tag{border:1px solid #36527c;color:#b8d2ff;border-radius:30px;padding:6px 12px;font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:25px 0}.card,.panel{background:linear-gradient(145deg,var(--panel),#111a2c);border:1px solid var(--line);border-radius:16px;padding:18px}.k{color:var(--muted);font-size:13px}.v{font-size:27px;font-weight:700;margin-top:5px}
 .panel{margin-top:16px}.panel h2{font-size:18px;margin:0 0 5px}.hint{color:var(--muted);font-size:13px;margin:0 0 14px}
-.chart-wrap{width:100%;overflow:hidden}svg{display:block;width:100%;height:auto;min-height:250px}
-.gridline{stroke:#2b3a56;stroke-width:1}.axis{stroke:#8495b2;stroke-width:1.2}.tick{fill:#9aabc7;font-size:12px}.axislabel{fill:#d9e5fa;font-size:13px}.dot{fill:#79aaff;stroke:#d5e5ff;stroke-width:1.5;cursor:pointer}.dot:hover{fill:#50d6a0;r:7}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.controls input,.controls select,.risk-input{background:#0d1628;border:1px solid #354664;border-radius:9px;color:var(--text);padding:10px 12px;font:inherit}.controls input{min-width:210px;flex:1}.controls select{min-width:150px}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:720px;background:#10192b}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid #26344e;white-space:nowrap}th{color:#aebfda;font-size:12px;text-transform:uppercase;background:#17233a;position:sticky;top:0}td.num{text-align:right;font-variant-numeric:tabular-nums}.score{font-weight:700;color:#b8d2ff}.risk-input{width:100px;padding:7px 8px}.muted{color:var(--muted)}.notice{border-left:3px solid #e7b45c;padding:10px 13px;background:#282316;color:#e9d6a8;border-radius:7px;font-size:13px;margin-top:14px}
-button{background:#264c85;color:white;border:1px solid #4774b5;padding:10px 14px;border-radius:9px;font-weight:600;cursor:pointer}button:hover{background:#3263aa}.footer{color:var(--muted);font-size:12px;margin-top:22px}
+.chart-wrap{width:100%;overflow:hidden}svg{display:block;width:100%;height:auto;min-height:250px}.gridline{stroke:#2b3a56;stroke-width:1}.axis{stroke:#8495b2;stroke-width:1.2}.tick{fill:#9aabc7;font-size:12px}.axislabel{fill:#d9e5fa;font-size:13px}.dot{fill:#79aaff;stroke:#d5e5ff;stroke-width:1.5}.dot:hover{fill:#50d6a0}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.controls input,.controls select{background:#0d1628;border:1px solid #354664;border-radius:9px;color:var(--text);padding:10px 12px;font:inherit}.controls input{min-width:210px;flex:1}.controls select{min-width:170px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:790px;background:#10192b}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid #26344e;white-space:nowrap}th{color:#aebfda;font-size:12px;background:#17233a;position:sticky;top:0}td.num{text-align:right;font-variant-numeric:tabular-nums}.score{font-weight:700;color:#b8d2ff}.positive{color:#80d9b6;font-weight:700}.muted{color:var(--muted)}.pending{color:#e7b45c}
+.notice{border-left:3px solid #e7b45c;padding:10px 13px;background:#282316;color:#e9d6a8;border-radius:7px;font-size:13px;margin-top:14px}.footer{color:var(--muted);font-size:12px;margin-top:22px}
 @media(max-width:650px){main{padding:20px 12px}.cards{grid-template-columns:1fr}.card{padding:14px}.v{font-size:23px}}
 </style>
 </head>
 <body><main>
-<header class="top"><div><h1>High Flyer Detector</h1><p class="sub">股票候選股評分與風險分佈儀表板</p></div><span class="tag">EARLY DASHBOARD · v1.0</span></header>
+<header class="top"><div><h1>High Flyer Detector</h1><p class="sub">股票候選股評分與風險分佈儀表板</p></div><span class="tag">DASHBOARD · v1.1</span></header>
 <section class="cards">
 <div class="card"><div class="k">候選股票</div><div class="v" id="count">29</div></div>
-<div class="card"><div class="k">目前最高初步總分</div><div class="v" id="topscore">66</div></div>
-<div class="card"><div class="k">已填風險值</div><div class="v" id="riskcount">0 / 29</div></div>
+<div class="card"><div class="k">已核實正面評分</div><div class="v" id="scored">9 / 29</div></div>
+<div class="card"><div class="k">已填風險值</div><div class="v" id="riskcount">29 / 29</div></div>
 </section>
-<section class="panel"><h2>風險 × 總分散點圖</h2><p class="hint">X 軸：風險絕對值（越右風險越高）｜Y 軸：總分（越高分數越高）。輸入風險值後，股票會出現在圖上。</p>
-<div class="chart-wrap"><svg id="plot" viewBox="0 0 900 390" role="img" aria-label="股票風險與總分散點圖"></svg></div>
-<div class="hint" id="chartmsg">尚未輸入風險絕對值，因此暫時沒有散點。請在下方表格輸入 0–100 的風險值。</div></section>
-<section class="panel"><h2>候選股票評分表</h2><p class="hint">可搜尋、排序及輸入風險絕對值。風險值會保存在目前瀏覽器的本機儲存空間。</p>
-<div class="controls"><input id="search" placeholder="搜尋股票代號…"><select id="sort"><option value="score">按總分：高至低</option><option value="scoreup">按總分：低至高</option><option value="ticker">按代號：A–Z</option><option value="risk">按風險：高至低</option></select><button id="clear">清除風險輸入</button></div>
-<div class="table-wrap"><table><thead><tr><th>排名</th><th>股票代號</th><th class="num">初步總分</th><th>風險絕對值 (0–100)</th><th>圖表狀態</th></tr></thead><tbody id="rows"></tbody></table></div>
-<div class="notice">資料注意：以上 29 隻股票的總分是先前對話中的初步、啟發式排序分數，並非已完成最新財務、估值、技術及 20 項正負面因素的正式重評。請勿單憑此頁分數作出投資決定。風險值目前留空，避免虛構數據。</div>
+<section class="panel"><h2>風險 × 正面評分散點圖</h2><p class="hint">X 軸：風險扣分絕對值（越右風險越高）｜Y 軸：正面評分 Positive Score（越高越好）。所有散點大小一致。</p>
+<div class="chart-wrap"><svg id="plot" viewBox="0 0 900 410" role="img" aria-label="股票風險與正面評分散點圖"></svg></div>
+<div class="hint" id="chartmsg">目前只繪製已有可靠正面評分的股票。</div></section>
+<section class="panel"><h2>候選股票評分表</h2><p class="hint">風險扣分沿用上一輪紀錄；正面評分只顯示已核實的數值。可搜尋及排序。</p>
+<div class="controls"><input id="search" placeholder="搜尋股票代號…"><select id="sort"><option value="positive">按正面評分：高至低</option><option value="net">按淨總分：高至低</option><option value="risk">按風險：高至低</option><option value="ticker">按代號：A–Z</option></select></div>
+<div class="table-wrap"><table><thead><tr><th>排名</th><th>股票代號</th><th class="num">正面評分</th><th class="num">風險扣分</th><th class="num">風險絕對值 (X)</th><th class="num">淨總分</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="notice">資料完整性提示：目前可從先前對話可靠核實的正面評分只有 9 隻；其餘 20 隻標示「待補」，不會以淨總分代替正面評分。淨總分是舊一輪初步紀錄，計算方式為正面評分加風險扣分；因部分正面評分尚未核實，這裡不重新計算。分數並非最新正式重評，請勿單憑此頁作出投資決定。</div>
 </section>
 <p class="footer">High Flyer Detector · Personal research dashboard · Not investment advice</p>
 </main>
 <script>
-const stocks=[["LLY",66],["REGN",64],["V",64],["MA",63],["ROP",61],["COST",59],["AAPL",58],["VEEV",57],["FDS",56],["CBOE",55],["BRK.B",54],["TXN",53],["LMT",52],["HAS",50],["JNJ",49],["ABBV",48],["XOM",47],["CVX",45],["COP",44],["CNC",42],["CRL",41],["MPC",40],["PSX",38],["VLO",37],["TRGP",36],["APA",30],["MRNA",27],["GEN",26],["VTRS",24]];
-const key="hfd-risk-v1";let risks={};try{risks=JSON.parse(localStorage.getItem(key)||"{}")}catch(e){}
+const rows=[
+["LLY",83,-17,66],["REGN",82,-18,64],["V",78,-14,64],["MA",77,-14,63],["ROP",76,-15,61],["COST",75,-16,59],["AAPL",73,-15,58],["VEEV",73,-16,57],["FDS",70,-14,56],
+["CBOE",null,-14,55],["BRK.B",null,-14,54],["TXN",null,-15,53],["LMT",null,-15,52],["HAS",null,-13,50],["JNJ",null,-15,49],["ABBV",null,-18,48],["XOM",null,-16,47],["CVX",null,-16,45],["COP",null,-17,44],["CNC",null,-16,42],["CRL",null,-18,41],["MPC",null,-19,40],["PSX",null,-19,38],["VLO",null,-20,37],["TRGP",null,-23,36],["APA",null,-23,30],["MRNA",null,-31,27],["GEN",null,-30,26],["VTRS",null,-29,24]
+];
+const risks=Object.fromEntries(rows.map(r=>[r[0],Math.abs(r[2])]));
 const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(key,JSON.stringify(risks));render()}
-function filtered(){let q=$("search").value.trim().toUpperCase(),a=stocks.filter(s=>s[0].includes(q));let mode=$("sort").value;
-if(mode==="score")a.sort((x,y)=>y[1]-x[1]);if(mode==="scoreup")a.sort((x,y)=>x[1]-y[1]);if(mode==="ticker")a.sort((x,y)=>x[0].localeCompare(y[0]));if(mode==="risk")a.sort((x,y)=>(Number(risks[y[0]])||-1)-(Number(risks[x[0]])||-1));return a}
-function render(){let a=filtered();$("count").textContent=stocks.length;$("topscore").textContent=Math.max(...stocks.map(s=>s[1]));$("riskcount").textContent=stocks.filter(s=>risks[s[0]]!==undefined&&risks[s[0]]!=="").length+" / "+stocks.length;
-$("rows").innerHTML=a.map((s,i)=>{let r=risks[s[0]]??"";return '<tr><td class="muted">'+(stocks.slice().sort((x,y)=>y[1]-x[1]).findIndex(x=>x[0]===s[0])+1)+'</td><td><b>'+s[0]+'</b></td><td class="num score">'+s[1]+'</td><td><input class="risk-input" type="number" min="0" max="100" step="1" placeholder="未輸入" value="'+r+'" data-ticker="'+s[0]+'"></td><td class="muted">'+(r!==""?"已加入散點":"等待風險值")+'</td></tr>'}).join("");
-document.querySelectorAll(".risk-input").forEach(el=>el.addEventListener("change",e=>{let t=e.target.dataset.ticker,v=e.target.value;if(v==="" ){delete risks[t]}else{let n=Number(v);if(!Number.isFinite(n)||n<0||n>100){alert("請輸入 0 至 100 之間的數字");e.target.value=risks[t]??"";return}risks[t]=n}save()}));draw()}
-function draw(){let svg=$("plot"),W=900,H=390,L=70,R=25,T=20,B=58,pw=W-L-R,ph=H-T-B;let vals=stocks.filter(s=>risks[s[0]]!==undefined&&risks[s[0]]!=="").map(s=>({t:s[0],x:Number(risks[s[0]]),y:s[1]}));let out="";
-for(let i=0;i<=5;i++){let x=L+pw*i/5,y=T+ph*i/5;out+='<line class="gridline" x1="'+x+'" y1="'+T+'" x2="'+x+'" y2="'+(T+ph)+'"/><text class="tick" x="'+x+'" y="'+(H-30)+'" text-anchor="middle">'+(i*20)+'</text><line class="gridline" x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'"/><text class="tick" x="'+(L-12)+'" y="'+(y+4)+'" text-anchor="end">'+(100-i*20)+'</text>'}
-out+='<line class="axis" x1="'+L+'" y1="'+(T+ph)+'" x2="'+(W-R)+'" y2="'+(T+ph)+'"/><line class="axis" x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(T+ph)+'"/><text class="axislabel" x="'+(L+pw/2)+'" y="'+(H-5)+'" text-anchor="middle">風險絕對值（0 = 低，100 = 高）</text><text class="axislabel" transform="translate(18 '+(T+ph/2)+') rotate(-90)" text-anchor="middle">總分</text>';
-vals.forEach(p=>{let x=L+pw*p.x/100,y=T+ph*(100-p.y)/100;out+='<circle class="dot" cx="'+x+'" cy="'+y+'" r="5"><title>'+p.t+'｜風險 '+p.x+'｜總分 '+p.y+'</title></circle><text class="tick" x="'+(x+8)+'" y="'+(y-8)+'">'+p.t+'</text>'});
-svg.innerHTML=out;$("chartmsg").textContent=vals.length?("目前顯示 "+vals.length+" 個散點。滑鼠移到散點可查看股票代號、風險及總分。"):"尚未輸入風險絕對值，因此暫時沒有散點。請在下方表格輸入 0–100 的風險值。"}
-$("search").addEventListener("input",render);$("sort").addEventListener("change",render);$("clear").addEventListener("click",()=>{if(confirm("確定清除所有已輸入的風險值？")){risks={};save()}});render();
+function filtered(){const q=$("search").value.trim().toUpperCase();let a=rows.filter(r=>r[0].includes(q));const mode=$("sort").value;
+if(mode==="positive")a.sort((x,y)=>(y[1]??-1)-(x[1]??-1));if(mode==="net")a.sort((x,y)=>y[3]-x[3]);if(mode==="risk")a.sort((x,y)=>Math.abs(y[2])-Math.abs(x[2]));if(mode==="ticker")a.sort((x,y)=>x[0].localeCompare(y[0]));return a}
+function render(){const a=filtered();$("count").textContent=rows.length;$("scored").textContent=rows.filter(r=>r[1]!==null).length+" / "+rows.length;$("riskcount").textContent=rows.length+" / "+rows.length;
+$("rows").innerHTML=a.map(r=>{const rank=rows.filter(x=>x[1]!==null).sort((x,y)=>y[1]-x[1]).findIndex(x=>x[0]===r[0]);return "<tr><td class='muted'>"+(r[1]===null?"—":rank+1)+"</td><td><b>"+r[0]+"</b></td><td class='num "+(r[1]===null?"pending":"positive")+"'>"+(r[1]===null?"待補":r[1])+"</td><td class='num'>"+r[2]+"</td><td class='num'>"+Math.abs(r[2])+"</td><td class='num score'>"+r[3]+"</td></tr>"}).join("");draw()}
+function draw(){const svg=$("plot"),W=900,H=410,L=72,R=25,T=22,B=65,pw=W-L-R,ph=H-T-B;const vals=rows.filter(r=>r[1]!==null).map(r=>({t:r[0],x:Math.abs(r[2]),y:r[1]}));let out="";
+const xmax=35,ymin=60,ymax=100;
+for(let i=0;i<=5;i++){const x=L+pw*i/5,y=T+ph*i/5;out+="<line class='gridline' x1='"+x+"' y1='"+T+"' x2='"+x+"' y2='"+(T+ph)+"'/><text class='tick' x='"+x+"' y='"+(H-34)+"' text-anchor='middle'>"+(i*xmax/5).toFixed(0)+"</text><line class='gridline' x1='"+L+"' y1='"+y+"' x2='"+(W-R)+"' y2='"+y+"'/><text class='tick' x='"+(L-12)+"' y='"+(y+4)+"' text-anchor='end'>"+(ymax-i*(ymax-ymin)/5).toFixed(0)+"</text>"}
+out+="<line class='axis' x1='"+L+"' y1='"+(T+ph)+"' x2='"+(W-R)+"' y2='"+(T+ph)+"'/><line class='axis' x1='"+L+"' y1='"+T+"' x2='"+L+"' y2='"+(T+ph)+"'/><text class='axislabel' x='"+(L+pw/2)+"' y='"+(H-7)+"' text-anchor='middle'>風險扣分絕對值（越右風險越高）</text><text class='axislabel' transform='translate(18 "+(T+ph/2)+") rotate(-90)' text-anchor='middle'>正面評分 Positive Score</text>";
+vals.forEach(p=>{const x=L+pw*p.x/xmax,y=T+ph*(ymax-p.y)/(ymax-ymin);out+="<circle class='dot' cx='"+x+"' cy='"+y+"' r='5'><title>"+p.t+"｜正面評分 "+p.y+"｜風險絕對值 "+p.x+"</title></circle><text class='tick' x='"+(x+8)+"' y='"+(y-8)+"'>"+p.t+"</text>"});svg.innerHTML=out;$("chartmsg").textContent="目前顯示 "+vals.length+" 個散點（只包括已核實正面評分的股票）；所有點大小一致。"}
+$("search").addEventListener("input",render);$("sort").addEventListener("change",render);render();
 </script></body></html>
